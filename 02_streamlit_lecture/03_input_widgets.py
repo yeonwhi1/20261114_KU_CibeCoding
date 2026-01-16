@@ -17,7 +17,7 @@ st.header("1. 텍스트 입력")
 st.subheader("한 줄 입력")
 name = st.text_input(
     "이름을 입력하세요:",
-    placeholder="홍길동",
+    placeholder="홍길동", #예시:placeholder
     help="이름을 입력하는 필드입니다"
 )
 if name:
@@ -31,14 +31,14 @@ email = st.text_input(
 
 password = st.text_input(
     "비밀번호:",
-    type="password"
+    type="password" #숨겨주겠다~
 )
 
 st.subheader("여러 줄 입력")
 message = st.text_area(
     "메시지를 입력하세요:",
     placeholder="여기에 메시지를 작성하세요...",
-    height=150
+    height=150 #글쓰는 칸의 폭(높이이자 너비)
 )
 if message:
     st.info(f"입력한 글자 수: {len(message)}자")
@@ -56,7 +56,7 @@ age = st.number_input(
     min_value=0,
     max_value=120,
     value=25,
-    step=1
+    step=1 #증가폭
 )
 st.write(f"입력한 나이: {age}세")
 

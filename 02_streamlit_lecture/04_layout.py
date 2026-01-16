@@ -48,18 +48,20 @@ col1, col2 = st.columns(2)
 
 with col1:
     st.write("**왼쪽 컬럼**")
-    st.button("버튼 1", use_container_width=True)
+    st.button("버튼 1", use_container_width=True, key="left_btn_1")
+    st.button("버튼 3", use_container_width=True, key="left_btn_2")
 
 with col2:
     st.write("**오른쪽 컬럼**")
-    st.button("버튼 2", use_container_width=True)
+    st.button("버튼 2", use_container_width=True, key="right_btn_1")
+    st.button("버튼 4", use_container_width=True, key="right_btn_2")
 
 
 # 구분선
 st.divider()
 
-st.subheader("3개 컬럼 (1:2:1 비율)")
-col1, col2, col3 = st.columns([1, 2, 1])
+st.subheader("3개 컬럼 (1:3:1 비율)")
+col1, col2, col3 = st.columns([1, 3, 1])
 
 with col1:
     st.metric("사용자", "1,234", "+12%")
@@ -77,7 +79,7 @@ with col3:
 st.divider()
 st.header("2. 탭 레이아웃")
 
-tab1, tab2  = st.tabs(["⚙️ 설정", "ℹ️ 정보"])
+tab1, tab2 , tab3 = st.tabs(["⚙️ 설정", "ℹ️ 정보","추가"])
 
 with tab1:
     st.subheader("설정 탭")
@@ -95,6 +97,8 @@ with tab2:
     **개발자**: Streamlit Team  
     **라이선스**: MIT
     """)
+
+
 
 # ============================================
 # 4. 확장 가능한 섹션 (Expander)
@@ -246,3 +250,117 @@ with st.expander("💡 과제 2 예시 답안"):
         st.write("대시보드 설정")
         st.checkbox("자동 새로고침")
         st.selectbox("새로고침 간격:", ["1분", "5분", "10분"])
+
+
+#--------------------------------------------------------
+import streamlit as st
+
+# 페이지 기본 설정
+st.set_page_config(page_title="제품 상세 페이지", layout="wide")
+
+# 사이드바: 카테고리 선택, 가격 범위 필터
+st.sidebar.header("필터")
+category = st.sidebar.selectbox(
+    "카테고리 선택",
+    ["전체", "전자제품", "패션", "생활용품", "도서"]
+)
+
+price_range = st.sidebar.slider(
+    "가격 범위 선택",
+    min_value=0,
+    max_value=500000,
+    value=(10000, 200000),
+    step=10000
+)
+
+st.divider()
+st.header("📝 실습 과제")
+st.markdown("""
+### 과제 1: 제품 상세 페이지 만들기
+
+다음 레이아웃으로 제품 상세 페이지를 만드세요:
+
+**구조:**
+1. 사이드바: 카테고리 선택, 가격 범위 필터
+2. 메인 영역:
+   - 2개 컬럼 (1:1): 왼쪽에 이미지, 오른쪽에 상품 정보
+   - 탭: 상세설명, 리뷰, 배송정보
+   - Expander: FAQ
+""")
+
+st.divider()
+st.header("🛒 제품 상세 페이지 예시")
+
+# 메인 영역 2분할 (왼쪽: 이미지, 오른쪽: 정보)
+col_left, col_right = st.columns(2)
+
+# ---------------- 왼쪽: 이미지 영역 ----------------
+with col_left:
+    st.subheader("상품 이미지")
+    sample_img_url = "https://placehold.co/600x600?text=Product+Image"
+    st.image(sample_img_url, use_column_width=True)
+
+# ---------------- 오른쪽: 텍스트/정보 영역 ----------------
+rating = 4.8
+max_stars = 5
+
+full_stars = int(rating)               # 정수 부분
+has_half = (rating - full_stars) >= 0.5
+empty_stars = max_stars - full_stars - (1 if has_half else 0)
+
+stars = "⭐" * full_stars
+if has_half:
+    stars += "✨"  # 반개를 표현하고 싶다면 다른 아이콘/문자 사용
+stars += "☆" * empty_stars
+
+st.markdown(f"{stars} {rating} / 5.0 ({review_count}개 리뷰)")
+
+    st.markdown("### 199,000원")
+    st.markdown(
+        "<span style='color:gray; text-decoration:line-through;'>259,000원</span> "
+        "<span style='color:#ff4b4b; font-weight:bold;'>24% 할인</span>",
+        unsafe_allow_html=True
+    )
+
+    st.markdown("---")
+
+    st.markdown("**색상 선택**")
+    color = st.radio(
+        label="색상",
+        options=["블랙", "화이트"],
+        horizontal=True,
+        label_visibility="collapsed"
+    )
+
+with tab1:
+    st.subheader("제품 상세설명")
+    st.markdown(
+        """
+- 최대 30시간 연속 재생
+- 고급 액티브 노이즈 캔슬링(ANC)
+- 블루투스 5.0 지원
+"""
+    )
+Q Expander ----------------
+with st.expander("❓ FAQ (자주 묻는 질문)"):
+    st.markdown("""
+    **Q1. 유선 연결도 가능한가요?**  
+    A1. 네, 동봉된 3.5mm 오디오 케이블을 통해 유선 연결이 가능합니다.
+
+    **Q2. 여러 기기와 멀티 페어링이 되나요?**  
+    A2. 최대 2대의 기기와 동시에 멀티 포인트 연결을 지원합니다.
+
+    **Q3. 방수 기능이 있나요?**  
+    A3. 생활 방수(IPX4) 등급으로, 땀이나 가벼운 비 정도는 견딜 수 있습니다.
+    """)
+
+# 버튼 동작(선택): 클릭 결과 메시지 표시
+if "cart_clicked" not in st.session_state:
+    st.session_state.cart_clicked = False
+
+if add_to_cart:
+    st.session_state.cart_clicked = True
+
+if st.session_state.cart_clicked:
+    st.success(f"장바구니에 '{quantity}'개 담았습니다. (색상: {color})")
+
